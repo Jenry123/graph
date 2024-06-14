@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrada de Grafo</title>
+    <link rel="stylesheet" href="style.css"> <!-- Enlace al archivo CSS externo -->
+</head>
+<body>
+    <h1>realizar trayectorias de zonas rurales</h1>
+    <div class="input-container">
+        <h2>Agregar zona</h2>
+        <input type="text" id="vertices" placeholder="Ingresa los vértices (separados por comas)">
+        <button onclick="addVertices()">Agregar</button>
+    </div>
+    <div class="input-container">
+        <h2>Agregar ruta</h2>
+        <input type="text" id="inicio" placeholder="Vértice de inicio">
+        <input type="text" id="fin" placeholder="Vértice de fin">
+        <input type="number" id="peso" placeholder="Peso" value="1">
+        <button onclick="addArista()">Agregar</button>
+    </div>
+    <div class="input-container">
+        <h2>Recorrido   </h2>
+        <button onclick="dfs()">Buscar</button>
+    </div>
+    <div id="salida"></div>
+    <script type="module" src="./src/controllers/app.js"></script>
+</body>
+</html>
