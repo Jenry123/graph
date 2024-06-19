@@ -1,22 +1,10 @@
 // src/controllers/app.js
 
-import Graph from '../models/Graph.js'; // Ajusta la ruta según tu estructura de carpetas
-import View from '../view/View.js'; // Ajusta la ruta según tu estructura de carpetas
+import Graph from '../models/Graph.js'; 
+import View from '../view/View.js'; 
 
 const graph = new Graph();
 const view = new View();
-
-
-graph.addVertices('A', 'B', 'C');
-graph.addConnection('A', 'B', 1);
-graph.addConnection('A', 'C', 4);
-graph.addConnection('B', 'C', 2);
-
-// Ejemplo de uso del algoritmo de Dijkstra
-const startVertex = 'A'; // Vértice inicial
-const distances = graph.dijkstra(startVertex);
-
-console.log(distances); 
 
 function addVertices() {
     const verticesInput = document.getElementById('vertices').value;
@@ -31,7 +19,7 @@ function addArista() {
     const fin = document.getElementById('fin').value;
     const peso = parseInt(document.getElementById('peso').value, 10);
     
-    if (graph.addConnection(inicio,fin,peso)) {
+    if (graph.addConnection(inicio, fin, peso)) {
         view.showAlert(`Ruta agregada: ${inicio} -> ${fin} (Peso: ${peso})`);
     } else {
         view.showAlert(`Error: No se pudo agregar la ruta ${inicio} -> ${fin}`);
@@ -54,8 +42,22 @@ function dfs() {
     }
 }
 
+function dijkstra() {
+    const inicio = document.getElementById('dijkstraInicio').value;
+    if (graph.adjacencyList.has(inicio)) {
+        const distances = graph.dijkstra(inicio);
+        let resultado = 'Distancias: ';
+        for (let [vertex, distance] of distances) {
+            resultado += `${vertex}: ${distance}, `;
+        }
+        view.showAlert(resultado);
+    } else {
+        view.showAlert(`Error: El vértice ${inicio} no existe en el grafo.`);
+    }
+}
 
 // Asociación de eventos a los botones
 document.getElementById('addVerticesBtn').addEventListener('click', addVertices);
 document.getElementById('addAristaBtn').addEventListener('click', addArista);
 document.getElementById('dfsBtn').addEventListener('click', dfs);
+document.getElementById('dijkstraBtn').addEventListener('click', dijkstra);

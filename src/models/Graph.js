@@ -29,7 +29,7 @@ class Graph {
             distances.set(vertex, Infinity);
         }
         distances.set(start, 0);
-
+        
         while (true) {
             let minDistance = Infinity;
             let minVertex = null;
@@ -57,6 +57,26 @@ class Graph {
         }
 
         return distances;
+    }
+
+    dfs(start, callback) {
+        const visited = new Set();
+
+        const traverse = (vertex) => {
+            if (!vertex) return;
+
+            visited.add(vertex);
+            callback(vertex);
+
+            const neighbors = this.adjacencyList.get(vertex);
+            for (let neighbor of neighbors) {
+                if (!visited.has(neighbor.node)) {
+                    traverse(neighbor.node);
+                }
+            }
+        };
+
+        traverse(start);
     }
 }
 
