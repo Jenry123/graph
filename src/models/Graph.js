@@ -23,15 +23,15 @@ class Graph {
     dijkstra(start) {
         const distances = new Map();
         const visited = new Set();
-
+        const infinito=99999999
         // Inicializar distancias con infinito para todos los vértices excepto el inicial
         for (let vertex of this.adjacencyList.keys()) {
-            distances.set(vertex, Infinity);
+            distances.set(vertex, infinito);
         }
         distances.set(start, 0);
         
         while (true) {
-            let minDistance = Infinity;
+            let minDistance = Infinito;
             let minVertex = null;
 
             // Encontrar vértice no visitado con la distancia mínima actual
@@ -42,7 +42,7 @@ class Graph {
                 }
             }
 
-            if (minVertex === null) break; // Si no hay vértices por visitar, salir del ciclo
+            if (minVertex === null) break; 
 
             visited.add(minVertex);
 
@@ -81,3 +81,5 @@ class Graph {
 }
 
 export default Graph;
+
+
