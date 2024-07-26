@@ -21,37 +21,47 @@ class Graph {
     }
 
     dijkstra(start) {
+        const infinito = 99999999;
         const distances = new Map();
         const visited = new Set();
-        const infinito=99999999
-        // Inicializar distancias con infinito para todos los vértices excepto el inicial
+        const LPrima = new Set();
+        const D = new Map();
+        const DPrima = new Map();
+
         for (let vertex of this.adjacencyList.keys()) {
             distances.set(vertex, infinito);
+            D.set(vertex, infinito);
+            DPrima.set(vertex, infinito);
+            LPrima.add(vertex);
         }
         distances.set(start, 0);
-        
-        while (true) {
-            let minDistance = Infinito;
+        D.set(start, 0);
+        DPrima.set(start, 0);
+
+        while (LPrima.size > 0) {
+            let minDistance = infinito;
             let minVertex = null;
 
-            // Encontrar vértice no visitado con la distancia mínima actual
-            for (let [vertex, distance] of distances) {
-                if (!visited.has(vertex) && distance < minDistance) {
-                    minDistance = distance;
+            for (let vertex of LPrima) {
+                if (DPrima.get(vertex) < minDistance) {
+                    minDistance = DPrima.get(vertex);
                     minVertex = vertex;
                 }
             }
 
-            if (minVertex === null) break; 
+            if (minVertex === null) break;
 
+            LPrima.delete(minVertex);
             visited.add(minVertex);
 
-            // Actualizar distancias de los vecinos del vértice actual
             const neighbors = this.adjacencyList.get(minVertex);
             for (let neighbor of neighbors) {
-                const totalWeight = distances.get(minVertex) + neighbor.weight;
-                if (totalWeight < distances.get(neighbor.node)) {
-                    distances.set(neighbor.node, totalWeight);
+                if (LPrima.has(neighbor.node)) {
+                    const alt = DPrima.get(minVertex) + neighbor.weight;
+                    if (alt < DPrima.get(neighbor.node)) {
+                        DPrima.set(neighbor.node, alt);
+                        distances.set(neighbor.node, alt);
+                    }
                 }
             }
         }
@@ -78,8 +88,14 @@ class Graph {
 
         traverse(start);
     }
+
+    get vertices() {
+        return Array.from(this.adjacencyList.keys());
+    }
+
+    hasVertex(vertex) {
+        return this.adjacencyList.has(vertex);
+    }
 }
 
 export default Graph;
-
-

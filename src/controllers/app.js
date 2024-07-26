@@ -1,5 +1,3 @@
-// src/controllers/app.js
-
 import Graph from '../models/Graph.js'; 
 import View from '../view/View.js'; 
 
@@ -7,17 +5,14 @@ const graph = new Graph();
 const view = new View();
 
 function addVertices() {
-    const verticesInput = document.getElementById('vertices').value;
-    const vertices = verticesInput.split(',').map(v => v.trim());
+    const vertices = view.getVertices();
     graph.addVertices(...vertices);
     view.clearVerticesInput();
     view.showAlert(`Zonas agregadas: ${vertices.join(', ')}`);
 }
 
 function addArista() {
-    const inicio = document.getElementById('inicio').value;
-    const fin = document.getElementById('fin').value;
-    const peso = parseInt(document.getElementById('peso').value, 10);
+    const { inicio, fin, peso } = view.getArista();
     
     if (graph.addConnection(inicio, fin, peso)) {
         view.showAlert(`Ruta agregada: ${inicio} -> ${fin} (Peso: ${peso})`);
@@ -29,28 +24,28 @@ function addArista() {
 }
 
 function dfs() {
-    const vertices = [...graph.adjacencyList.keys()];
+    const vertices = graph.vertices;
     
     if (vertices.length > 0) {
         let recorrido = 'Recorrido: ';
         graph.dfs(vertices[0], val => {
             recorrido += `${val} `;
         });
-        view.showAlert(recorrido);
+        view.showOutput(recorrido);
     } else {
-        view.showAlert('No hay vértices en el grafo.');
+        view.showOutput('No hay vértices en el grafo.');
     }
 }
 
 function dijkstra() {
     const inicio = document.getElementById('dijkstraInicio').value;
-    if (graph.adjacencyList.has(inicio)) {
+    if (graph.hasVertex(inicio)) {
         const distances = graph.dijkstra(inicio);
         let resultado = 'Distancias: ';
         for (let [vertex, distance] of distances) {
             resultado += `${vertex}: ${distance}, `;
         }
-        view.showAlert(resultado);
+        view.showOutput(resultado);
     } else {
         view.showAlert(`Error: El vértice ${inicio} no existe en el grafo.`);
     }
